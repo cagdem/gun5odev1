@@ -10,8 +10,6 @@ public class User implements Entity {
 	String email;
 	String password;
 	
-	public User() {}
-
 	public User(int id, String firstName, String lastName, String email, String password) {
 		super();
 		this.id = id;

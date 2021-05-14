@@ -9,7 +9,8 @@ public interface UserService {
 
 	void add(User user);
 	List<User> getAll();
-	boolean emailCheck(String email);
+	boolean checkEmailUsedBefore(String email);
+	boolean checkEmailIsValid(String email);
 	void sendVerificationEmail();
 	boolean verificationButton();
 	void login(Login login);

@@ -1,6 +1,8 @@
 package eTicaretBackend.business.concretes;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import eTicaretBackend.business.abstracts.UserService;
 import eTicaretBackend.core.LoginService;
@@ -31,8 +33,12 @@ public class UserManager implements UserService {
 			return;
 		}
 		
-		if(emailCheck(user.getEmail())) {
+		if(checkEmailUsedBefore(user.getEmail())) {
 			System.out.println("Bu mail daha once kullanilmis.");
+			return;
+		}
+		if(checkEmailIsValid(user.getEmail())) {
+			System.out.println("Lutfen dogru formatta bir mail giriniz.");
 			return;
 		}
 		
@@ -48,7 +54,7 @@ public class UserManager implements UserService {
 	}
 
 	@Override
-	public boolean emailCheck(String email) {
+	public boolean checkEmailUsedBefore(String email) {
 
 		List<User> users = this.userDao.getAll();
 		for(User user: users) {
@@ -78,6 +84,15 @@ public class UserManager implements UserService {
 	public void login(Login login) {
 		this.loginService.login(login);
 		
+	}
+
+	@Override
+	public boolean checkEmailIsValid(String email) {
+
+		   String mailPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"+"[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+		   Pattern pattern = Pattern.compile(mailPattern);
+		   Matcher emailMatcher = pattern.matcher(email);
+		   return emailMatcher.matches();
 	}
 
 }
